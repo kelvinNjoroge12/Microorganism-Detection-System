@@ -1,0 +1,92 @@
+/* Base Styles */
+:root {
+  --primary: #4a6b8a;
+  --primary-light: #5d7b9a;
+  --secondary: #f8f9fa;
+  --dark: #343a40;
+  --light: #f8f9fa;
+  --success: #28a745;
+  --info: #17a2b8;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --staff: #6f42c1;
+}
+
+/* Badges */
+.harmful-badge, .status-badge, .active-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.harmful-badge.harmful, .status-badge.active {
+  background-color: var(--danger);
+}
+
+.harmful-badge.safe, .status-badge.regular {
+  background-color: var(--success);
+}
+
+.status-badge.staff {
+  background-color: var(--staff);
+}
+
+.active-badge.active {
+  background-color: var(--success);
+}
+
+.active-badge.inactive {
+  background-color: var(--dark);
+  opacity: 0.7;
+}
+
+/* Confidence Bar */
+.confidence-container {
+  position: relative;
+  width: 100px;
+  height: 20px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.confidence-bar {
+  height: 100%;
+  background-color: var(--primary);
+  transition: width 0.3s;
+}
+
+.confidence-container span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  color: white;
+  text-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+/* Image Previews */
+img {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Tables */
+#changelist table thead th {
+  background-color: var(--primary);
+  color: white;
+}
+
+#changelist table tbody tr:hover {
+  background-color: rgba(74, 107, 138, 0.05);
+}
+
+/* Inlines */
+.inline-group .tabular tr.add-row td {
+  background-color: var(--light);
+}

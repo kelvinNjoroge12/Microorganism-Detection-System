@@ -1,0 +1,16 @@
+# Ignore virtual environments
+venv/
+.env/
+.venv/
+env/
+
+# Bytecode
+__pycache__/
+*.py[cod]
+
+# VS Code and PyCharm settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store

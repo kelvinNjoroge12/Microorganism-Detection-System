@@ -1,0 +1,22 @@
+{% if failed_predictions %}
+<div class="notification-container">
+    <div class="notification-card">
+        <div class="notification-header">
+            <h3>Classification Errors ({{ failed_predictions|length }})</h3>
+            <button class="close-notifications">&times;</button>
+        </div>
+        
+        <div class="notification-body">
+            {% for failure in failed_predictions %}
+            <div class="error-item">
+                <div class="error-filename">{{ failure.filename }}</div>
+                <div class="error-message">{{ failure.error }}</div>
+                {% if failure.confidence %}
+                <div class="error-confidence">Confidence: {{ failure.confidence|floatformat:2 }}%</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

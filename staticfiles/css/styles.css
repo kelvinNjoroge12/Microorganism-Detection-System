@@ -1,0 +1,129 @@
+/* Buttons */
+.btn {
+    background: #007BFF;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 10px 5px;
+    transition: all 0.3s;
+}
+
+.btn:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #6c757d;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+/* Features */
+.features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.feature {
+    flex: 1;
+    min-width: 250px;
+    margin: 15px;
+    padding: 20px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 8px;
+}
+
+.feature-icon {
+    font-size: 40px;
+    color: #007BFF;
+    margin-bottom: 15px;
+}
+
+/* Alerts */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid #dc3545;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 5px solid #28a745;
+}
+
+/* Forms */
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 30px auto;
+    }
+
+    .features {
+        flex-direction: column;
+    }
+}
+.custom-popup-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+    color: #856404;
+    padding: 15px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 1000;
+    max-width: 400px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.popup-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-message {
+    margin-right: 15px;
+}
+
+.popup-close-btn {
+    background: none;
+    border: none;
+    color: #856404;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

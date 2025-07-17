@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Microorganism Detection System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://thumbs.dreamstime.com/b/vibrant-micro-organisms.jpg') no-repeat center center/cover;
+            animation: backgroundSlideshow 20s infinite;
+            margin: 0;
+            padding: 0;
+        }
+
+        @keyframes backgroundSlideshow {
+            0% { background-image: url('{% static "images/bg1.png" %}'); }
+            25% { background-image: url('{% static "images/bg2.png" %}'); }
+            50% { background-image: url('{% static "images/bg3.png" %}'); }
+            75% { background-image: url('{% static "images/bg4.png" %}'); }
+            100% { background-image: url('{% static "images/image 1.png" %}'); }
+        }
+
+        header {
+            background: rgba(80, 25, 30, 0.8);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        nav {
+            background: rgba(80, 25, 70, 0.8);
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+        }
+
+        nav a:hover {
+            background: #007BFF;
+        }
+
+        footer {
+            background: rgba(80, 25, 70, 0.8);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        Microorganism Detection System
+    </header>
+
+    <nav>
+        <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+        <a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+        <a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Contact</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'predictions:upload_images' %}"><i class="fas fa-upload"></i> Upload</a>
+            <a href="{% url 'predictions:prediction_history' %}"><i class="fas fa-history"></i> History</a>
+            <a href="{% url 'users:profile' %}"><i class="fas fa-user"></i> Profile</a>
+            {% if user.is_admin %}
+                <a href="{% url 'predictions:update_model' %}"><i class="fas fa-cog"></i> Admin</a>
+            {% endif %}
+            <a href="{% url 'users:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        {% else %}
+            <a href="{% url 'users:login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="{% url 'users:register' %}"><i class="fas fa-user-plus"></i> Register</a>
+        {% endif %}
+    </nav>
+
+    <main>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        &copy; {% now "Y" %} Microorganism Detection System | All Rights Reserved
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-user-edit"></i> Update Profile</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Profile Picture</label>
+            {% if user.profile_pic %}
+                <img src="{{ user.profile_pic.url }}" class="profile-pic-preview">
+            {% endif %}
+            {{ form.profile_pic }}
+        </div>
+
+        <div class="form-group">
+            <label>Username</label>
+            {{ form.username }}
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            {{ form.email }}
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            {{ form.phone }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{% url 'users:profile' %}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+// Preview profile picture before upload
+document.getElementById('id_profile_pic').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const preview = document.querySelector('.profile-pic-preview');
+            if (preview) {
+                preview.src = event.target.result;
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+{% endblock %}

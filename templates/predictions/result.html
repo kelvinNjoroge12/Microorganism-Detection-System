@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container">
+    <h2>Analysis Results</h2>
+
+    <!-- Current Prediction Card -->
+    <div class="card mb-4">
+        <div class="card-header bg-{% if prediction.harmful %}danger{% else %}success{% endif %} text-white">
+            <h3 class="mb-0">{{ prediction.microorganism }}</h3>
+            {% if scientific_name and scientific_name != prediction.microorganism %}
+            <small class="text-light">Scientific name: {{ scientific_name }}</small>
+            {% endif %}
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Analysis Details</h4>
+                    <p class="lead">
+                        <span class="badge bg-{% if prediction.harmful %}danger{% else %}success{% endif %}">
+                            {{ prediction.confidence|mul:100|floatformat:1 }}% Confidence
+                        </span>
+                    </p>
+
+                    <div class="mb-3">
+                        <h5>Safety Status:</h5>
+                        <div class="alert alert-{% if prediction.harmful %}danger{% else %}success{% endif %}">
+                            {% if prediction.harmful %}
+                            <i class="fas fa-exclamation-triangle"></i> Potentially Harmful
+                            {% else %}
+                            <i class="fas fa-check-circle"></i> Safe
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5>Commonly Found In:</h5>
+                        {% if prediction.food_source %}
+                            <div class="food-sources">
+                                {{ prediction.food_source }}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                <i class="fas fa-info-circle"></i> No food sources identified
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="text-muted">
+                            <small>Model Version: {{ prediction.model_version|default:"Not specified" }}</small>
+                        </p>
+                        <p class="text-muted">
+                            <small>Date Analyzed: {{ prediction.date_created|date:"Y-m-d H:i" }}</small>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h4>Analyzed Image</h4>
+                    <div class="analysis-image">
+                        {% if prediction.image %}
+                        <img src="{{ prediction.image.url }}"
+                             class="img-fluid rounded square-image-main"
+                             alt="Microorganism analysis">
+                        <div class="image-caption text-center mt-2">
+                            <small class="text-muted">
+                                {{ prediction.microorganism }} detected in sample
+                            </small>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i> No image available
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Batch Results -->
+    {% if batch_predictions|length > 1 %}
+    <div class="card mt-4">
+        <div class="card-header bg-light">
+            <h4>Current Batch ({{ batch_predictions|length }} images)</h4>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-2 row-cols-md-5 g-4">
+                {% for pred in batch_predictions %}
+                <div class="col">
+                    <div class="card h-100 {% if pred.id == prediction.id %}border-primary{% endif %}">
+                        {% if pred.image %}
+                        <img src="{{ pred.image.url }}"
+                             class="card-img-top square-image"
+                             alt="Batch classification">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center square-image">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">{{ pred.microorganism|truncatechars:20 }}</h6>
+                            <p class="card-text">
+                                <span class="badge bg-{% if pred.harmful %}danger{% else %}success{% endif %}">
+                                    {{ pred.confidence|mul:100|floatformat:1 }}%
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent p-2">
+                            <a href="{% url 'predictions:analysis_result' pred.id %}"
+                               class="btn btn-sm {% if pred.id == prediction.id %}btn-primary{% else %}btn-outline-primary{% endif %} w-100">
+                                {% if pred.id == prediction.id %}Viewing{% else %}View{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Classifications -->
+    <div class="card mt-4">
+        <div class="card-header bg-light">
+            <h4>Your Recent Classifications</h4>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-2 row-cols-md-5 g-4">
+                {% for pred in recent_predictions %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if pred.image %}
+                        <img src="{{ pred.image.url }}"
+                             class="card-img-top square-image"
+                             alt="Recent classification">
+                        {% else %}
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center square-image">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="card-title">{{ pred.microorganism|truncatechars:20 }}</h6>
+                            <p class="card-text">
+                                <span class="badge bg-{% if pred.harmful %}danger{% else %}success{% endif %}">
+                                    {{ pred.confidence|mul:100|floatformat:1 }}%
+                                </span>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent p-2">
+                            <a href="{% url 'predictions:analysis_result' pred.id %}"
+                               class="btn btn-sm btn-outline-primary w-100">
+                                View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer mt-4">
+        <div class="d-flex justify-content-between">
+            <a href="{% url 'predictions:prediction_history' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-history"></i> View Full History
+            </a>
+            <a href="{% url 'predictions:upload_images' %}" class="btn btn-primary">
+                <i class="fas fa-upload"></i> Upload New Images
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .square-image-main {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+    .square-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+    .food-sources {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .card.h-100 {
+        transition: transform 0.2s;
+    }
+    .card.h-100:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}

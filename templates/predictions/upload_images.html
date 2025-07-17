@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <h2>Upload Images for Analysis</h2>
+
+    <!-- Status Indicator -->
+    <div class="alert alert-{% if model_loaded %}success{% else %}danger{% endif %} mb-3">
+        System Status: {% if model_loaded %}Ready{% else %}Not Available{% endif %}
+        {% if model_version %} | Model Version: {{ model_version }}{% endif %}
+    </div>
+
+    <form method="post" enctype="multipart/form-data" id="upload-form">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="images" class="form-label">Select images (max 10)</label>
+            <input type="file" name="images" id="images" class="form-control" multiple
+                   accept="image/*" onchange="previewImages()">
+        </div>
+
+        <div id="image-preview" class="row row-cols-2 row-cols-md-5 g-4 mb-4"></div>
+
+        <button type="submit" class="btn btn-primary" {% if not model_loaded %}disabled{% endif %}>
+            Analyze
+        </button>
+    </form>
+
+    {% if messages %}
+    <div class="mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .preview-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    .preview-container {
+        position: relative;
+        margin-bottom: 15px;
+    }
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<script>
+function previewImages() {
+    const preview = document.getElementById('image-preview');
+    preview.innerHTML = '';
+    const files = document.getElementById('images').files;
+
+    if (files.length > 10) {
+        alert('You can only upload up to 10 images');
+        document.getElementById('images').value = '';
+        return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const div = document.createElement('div');
+            div.className = 'col preview-container';
+            div.innerHTML = `
+                <img src="${e.target.result}" class="preview-image">
+                <button type="button" class="remove-btn" onclick="removeImage(${i})">×</button>
+            `;
+            preview.appendChild(div);
+        }
+        reader.readAsDataURL(files[i]);
+    }
+}
+
+function removeImage(index) {
+    const input = document.getElementById('images');
+    const files = Array.from(input.files);
+    files.splice(index, 1);
+
+    // Create new DataTransfer to update files
+    const dataTransfer = new DataTransfer();
+    files.forEach(file => dataTransfer.items.add(file));
+    input.files = dataTransfer.files;
+
+    // Update preview
+    previewImages();
+}
+</script>
+{% endblock %}

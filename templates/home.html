@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Welcome to Pathogen Detection System</h2>
+    
+    {% if user.is_authenticated %}
+        <div class="welcome-message">
+            <p>Hello, {{ user.username }}! Ready to analyze some microorganisms ?</p>
+            <div class="action-buttons">
+                <a href="{% url 'predictions:upload_images' %}" class="btn"><i class="fas fa-upload"></i> Upload Images</a>
+                <a href="{% url 'predictions:prediction_history' %}" class="btn btn-secondary"><i class="fas fa-history"></i> View History</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="welcome-message">
+            <p>Advanced AI-powered detection of pathogen in food samples.</p>
+            <div class="action-buttons">
+                <a href="{% url 'users:register' %}" class="btn"><i class="fas fa-user-plus"></i> Register Now</a>
+                <a href="{% url 'users:login' %}" class="btn btn-secondary"><i class="fas fa-sign-in-alt"></i> Login</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="features">
+        <div class="feature">
+            <i class="fas fa-brain feature-icon"></i>
+            <h3>AI-Powered Analysis</h3>
+            <p>Our system uses advanced machine learning to detect foodborne pathogen with high accuracy.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-file-alt feature-icon"></i>
+            <h3>Comprehensive Reports</h3>
+            <p>Get detailed information about detected microorganisms and their potential risks.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-database feature-icon"></i>
+            <h3>Historical Data</h3>
+            <p>Track all your previous analyses and filter results for better insights.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

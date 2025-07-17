@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Classification History</h2>
+
+    <!-- Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get">
+                <div class="row">
+                    <div class="col-md-5">
+                        <label for="microorganism">Filter by Microorganism:</label>
+                        <select name="microorganism" id="microorganism" class="form-select">
+                            <option value="">All Microorganisms</option>
+                            {% for micro in microorganisms %}
+                            <option value="{{ micro }}" {% if micro == microorganism_filter %}selected{% endif %}>
+                                {{ micro }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="harmful">Filter by Harmful Status:</label>
+                        <select name="harmful" id="harmful" class="form-select">
+                            <option value="">All</option>
+                            <option value="true" {% if harmful_filter == 'true' %}selected{% endif %}>Harmful</option>
+                            <option value="false" {% if harmful_filter == 'false' %}selected{% endif %}>Safe</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="card">
+        <div class="card-body">
+            {% if page_obj.object_list %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Microorganism</th>
+                            <th>Status</th>
+                            <th>Food Sources</th>
+                            <th>Confidence</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prediction in page_obj %}
+                        <tr onclick="window.location='{% url 'predictions:prediction_detail' pk=prediction.pk %}';" style="cursor:pointer;">
+                            <td>
+                                <img src="{{ prediction.image.url }}" alt="Classification" style="max-width: 100px; max-height: 100px;">
+                            </td>
+                            <td>{{ prediction.display_name|default:prediction.microorganism }}</td>
+                            <td>
+                                <span class="badge bg-{% if prediction.harmful %}danger{% else %}success{% endif %}">
+                                    {% if prediction.harmful %}Harmful{% else %}Safe{% endif %}
+                                </span>
+                            </td>
+                            <td>
+                                {% if prediction.food_source %}
+                                    {{ prediction.food_source }}
+                                {% else %}
+                                    Not specified
+                                {% endif %}
+                            </td>
+                            <td>{{ prediction.confidence|mul:100|floatformat:1 }}%</td>
+                            <td>{{ prediction.date_created|date:"Y-m-d H:i" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if harmful_filter %}&harmful={{ harmful_filter }}{% endif %}{% if microorganism_filter %}&microorganism={{ microorganism_filter }}{% endif %}">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if harmful_filter %}&harmful={{ harmful_filter }}{% endif %}{% if microorganism_filter %}&microorganism={{ microorganism_filter }}{% endif %}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if harmful_filter %}&harmful={{ harmful_filter }}{% endif %}{% if microorganism_filter %}&microorganism={{ microorganism_filter }}{% endif %}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if harmful_filter %}&harmful={{ harmful_filter }}{% endif %}{% if microorganism_filter %}&microorganism={{ microorganism_filter }}{% endif %}">Last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% else %}
+            <div class="alert alert-info">
+                No classification history found. <a href="{% url 'predictions:upload_images' %}">Upload an image</a> to get started.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Optional: Add some styling to improve readability of comma-separated list */
+    td {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}

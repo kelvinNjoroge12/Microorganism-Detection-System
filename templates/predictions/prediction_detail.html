@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; margin: 20px;">
+    <div style="background: white; color: black; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 800px; width: 100%;">
+        <h2 style="color: black; text-align: center; margin-bottom: 20px;">Prediction Details</h2>
+        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center;">
+            <img src="{{ prediction.image.url }}" alt="Uploaded sample" width="300" style="border-radius: 4px; max-width: 100%;">
+            <div style="color: black; min-width: 250px;">
+                <p><strong>Microorganism:</strong> {{ prediction.microorganism }}</p>
+                <p><strong>Status:</strong> {{ prediction.get_status_display }}</p>
+                <p><strong>Food Source:</strong> {{ prediction.food_source }}</p>
+                <p><strong>Confidence:</strong> {{ prediction.confidence|floatformat:2 }}%</p>
+                <p><strong>Date:</strong> {{ prediction.date_created }}</p>
+                <p><strong>Model Version:</strong> {{ model_version }}</p>
+                {% if prediction.verification_notes %}
+                    <p><strong>Verification Notes:</strong> {{ prediction.verification_notes }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'predictions:prediction_history' %}" style="padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">Back to History</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-1 text-danger">500</h1>
+        <h2 class="ext-4">Server Error</h2>
+        <p class="lead">
+            We're sorry, but something went wrong on our end.
+        </p>
+        <p>
+            Our team has been notified, and we're working to fix the issue.
+        </p>
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-home"></i> Return Home
+            </a>
+            <a href="{% url 'contact' %}" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-envelope"></i> Contact Support
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

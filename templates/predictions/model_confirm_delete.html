@@ -1,0 +1,57 @@
+{ % extends
+'base.html' %}
+
+{ % block
+content %}
+< div
+
+
+class ="card" >
+
+< div
+
+
+class ="card-header" >
+
+< h2 > Confirm
+Model
+Deletion < / h2 >
+< / div >
+< div
+
+
+class ="card-body" >
+
+< p > Are
+you
+sure
+you
+want
+to
+delete < strong > Model
+v
+{{model.version}} < / strong >? < / p >
+< p
+
+
+class ="text-danger" > This action cannot be undone! < / p >
+
+< form
+method = "post" >
+{ % csrf_token %}
+< button
+type = "submit"
+
+
+class ="btn btn-danger" > Delete Permanently < / button >
+
+< a
+href = "{% url 'predictions:update_model' %}"
+
+
+class ="btn btn-secondary" > Cancel < / a >
+
+< / form >
+< / div >
+< / div >
+{ % endblock %}

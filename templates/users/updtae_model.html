@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-cog"></i> Update AI Model</h2>
+    
+    <div class="model-info">
+        <div class="model-stat">
+            <h3><i class="fas fa-brain"></i> Current Model</h3>
+            <p>Version: {{ current_model.version }}</p>
+            <p>Last Updated: {{ current_model.updated_at|date:"M d, Y" }}</p>
+            <p>Accuracy: {{ current_model.accuracy }}%</p>
+        </div>
+        
+        <div class="model-update">
+            <h3><i class="fas fa-sync-alt"></i> Update Model</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.model_file.id_for_label }}"><i class="fas fa-file-upload"></i> Model File</label>
+                    {{ form.model_file }}
+                    <small class="form-text">Upload the new model file (.h5 or .pkl format)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.version.id_for_label }}"><i class="fas fa-tag"></i> Version Number</label>
+                    {{ form.version }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.release_notes.id_for_label }}"><i class="fas fa-sticky-note"></i> Release Notes</label>
+                    {{ form.release_notes }}
+                </div>
+                
+                <button type="submit" class="btn"><i class="fas fa-upload"></i> Update Model</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="model-history">
+        <h3><i class="fas fa-history"></i> Update History</h3>
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Date</th>
+                    <th>Changes</th>
+                    <th>Accuracy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for version in model_versions %}
+                    <tr>
+                        <td>{{ version.version }}</td>
+                        <td>{{ version.updated_at|date:"M d, Y" }}</td>
+                        <td>{{ version.release_notes|truncatechars:50 }}</td>
+                        <td>{{ version.accuracy }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

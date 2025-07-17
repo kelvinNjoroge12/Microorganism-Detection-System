@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-user-plus"></i> Register</h2>
+    
+    <form method="post" enctype="multipart/form-data" class="form-container">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+
+        <button type="submit" class="btn"><i class="fas fa-user-check"></i> Sign Up</button>
+    </form>
+
+    <p>Already have an account? <a href="{% url 'registration:login' %}">Login here</a>.</p>
+</div>
+{% endblock %}

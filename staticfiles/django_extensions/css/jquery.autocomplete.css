@@ -1,0 +1,114 @@
+/**
+ * @fileOverview CSS for jquery-autocomplete, the jQuery Autocompleter
+ * @author <a href="mailto:dylan@dyve.net">Dylan Verheul</a>
+ * @license MIT | GPL | Apache 2.0, see LICENSE.txt
+ * @see https://github.com/dyve/jquery-autocomplete
+ */
+.acResults {
+	padding: 0px;
+	border: 1px solid WindowFrame;
+	background-color: Window;
+	overflow: hidden;
+}
+
+.acResults ul {
+	margin: 0px;
+	padding: 0px;
+	list-style-position: outside;
+	list-style: none;
+}
+
+.acResults ul li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: pointer;
+	display: block;
+	font: menu;
+	font-size: 12px;
+	overflow: hidden;
+}
+
+.acLoading {
+	background : url('../img/indicator.gif') right center no-repeat;
+}
+
+.acSelect {
+	background-color: Highlight;
+	color: HighlightText;
+}
+
+/* Notification system */
+.notification-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 500px;
+}
+
+.notification-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+.notification-header {
+    background: #f44336;
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.close-notifications {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0 4px 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-body {
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.error-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.error-item:last-child {
+    border-bottom: none;
+}
+
+.error-filename {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.error-message {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.error-confidence {
+    font-size: 12px;
+    color: #888;
+}

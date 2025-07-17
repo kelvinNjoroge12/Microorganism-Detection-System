@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Model Management</h2>
+
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'upload' %}active{% endif %}"
+                   href="{% url 'predictions:model_upload' %}">Upload Model</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'update' %}active{% endif %}"
+                   href="{% url 'predictions:update_model' %}">Manage Models</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <h4>Active Model</h4>
+        {% if active_model %}
+            <div class="alert alert-success">
+                <strong>v{{ active_model.version }}</strong> - {{ active_model.uploaded_at|date:"Y-m-d" }}
+                <p>{{ active_model.release_notes }}</p>
+                <p>Accuracy: {{ active_model.accuracy|floatformat:2 }}</p>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">No active model selected</div>
+        {% endif %}
+
+        <h4>All Models</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Upload Date</th>
+                    <th>Accuracy</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for model in all_models %}
+                <tr class="{% if model.is_active %}table-success{% endif %}">
+                    <td>v{{ model.version }}</td>
+                    <td>{{ model.uploaded_at|date:"Y-m-d" }}</td>
+                    <td>{{ model.accuracy|floatformat:2 }}</td>
+                    <td>
+                        {% if not model.is_active %}
+                            <a href="{% url 'predictions:activate_model' model.pk %}" class="btn btn-sm btn-primary">Activate</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

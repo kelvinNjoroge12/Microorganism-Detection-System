@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Your Prediction History</h2>
+    <p class="text-muted">Total predictions: {{ prediction_count }}</p>
+
+    <div class="list-group mt-3">
+        {% for prediction in page_obj %}
+        <div class="list-group-item list-group-item-action">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="me-3">
+                    <h5 class="mb-1">
+                        {{ prediction.microorganism }}
+                        <span class="badge {% if prediction.harmful %}bg-danger{% else %}bg-success{% endif %} ms-2">
+                            {{ prediction.get_status_display }}
+                        </span>
+                    </h5>
+                    <p class="mb-1">
+                        <i class="fas fa-utensils me-1"></i>
+                        {{ prediction.food_source|default:"Unknown food source" }}
+                    </p>
+                    <small class="text-muted">
+                        <i class="fas fa-chart-line me-1"></i>
+                        Confidence: {{ prediction.confidence|floatformat:2 }}%
+                    </small>
+                </div>
+                <div class="text-end">
+                    <small class="text-muted d-block">
+                        <i class="far fa-clock me-1"></i>
+                        {{ prediction.date_created|date:"M d, Y H:i" }}
+                    </small>
+                    {% if prediction.verified_by %}
+                    <span class="badge bg-info mt-1">
+                        <i class="fas fa-check-circle me-1"></i>
+                        Verified
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="list-group-item">
+            <div class="text-center py-4">
+                <i class="fas fa-microscope fa-3x text-muted mb-3"></i>
+                <h5>No predictions yet</h5>
+                <p class="text-muted">Your prediction history will appear here</p>
+                <a href="{% url 'predictions:upload_images' %}" class="btn btn-primary mt-2">
+                    <i class="fas fa-upload me-1"></i>
+                    Upload First Image
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+        {% include 'includes/pagination.html' %}
+    {% endif %}
+</div>
+{% endblock %}

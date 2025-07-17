@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2><i class="fas fa-user"></i> Your Profile</h2>
+
+    <div class="profile-info">
+        {% if user.profile_pic %}
+            <img src="{{ user.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+        {% else %}
+            <div class="profile-pic-placeholder">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        {% endif %}
+
+        <div class="profile-details">
+            <div class="detail">
+                <span class="label"><i class="fas fa-user-tag"></i> Username:</span>
+                <span class="value">{{ user.username }}</span>
+            </div>
+            <div class="detail">
+                <span class="label"><i class="fas fa-envelope"></i> Email:</span>
+                <span class="value">{{ user.email }}</span>
+            </div>
+            {% if user.phone %}
+            <div class="detail">
+                <span class="label"><i class="fas fa-phone"></i> Phone:</span>
+                <span class="value">{{ user.phone }}</span>
+            </div>
+            {% endif %}
+            {% if user.is_admin %}
+            <div class="detail">
+                <span class="label"><i class="fas fa-shield-alt"></i> Role:</span>
+                <span class="value">Administrator</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'profile_update' %}" class="btn"><i class="fas fa-user-edit"></i> Update Profile</a>
+        <a href="{% url 'password_change' %}" class="btn btn-secondary"><i class="fas fa-key"></i> Change Password</a>
+    </div>
+</div>
+{% endblock %}

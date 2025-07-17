@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Model{% endblock %}
+
+{% block content %}
+<h2>Upload Model</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div>
+        <label for="name">Model Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <br>
+
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <br>
+
+    <div>
+        <label for="file">Upload File:</label>
+        <input type="file" id="file" name="file" required>
+    </div>
+    <br>
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
