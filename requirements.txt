@@ -92,5 +92,5 @@ tzdata==2025.2
 urllib3==2.3.0
 Werkzeug==3.1.3
 wrapt==1.14.1
-setuptools>=61.0
-wheel
+setuptools==69.5.1
+wheel==0.43.0
