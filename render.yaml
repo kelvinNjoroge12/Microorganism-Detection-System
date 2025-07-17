@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: your-app-name
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn core1.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: core1.settings
+      - key: PYTHON_VERSION
+        value: "3.10"
+      - key: SECRET_KEY
+        value: your-secret-key
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: your-app-name.onrender.com
+    staticPublishPath: media/
