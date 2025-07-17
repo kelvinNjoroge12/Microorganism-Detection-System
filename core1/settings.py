@@ -135,6 +135,9 @@ if DEBUG:
     STATICFILES_DIRS = [BASE_DIR / "static"]
     STATIC_ROOT = BASE_DIR / "staticfiles"
     MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+    
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Add the context processor for serving site settings
 # Ensure you have this in your `core1.context_processors.site_settings` if you are using it
