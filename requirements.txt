@@ -69,7 +69,6 @@ sqlparse==0.5.3
 tensorboard==2.15.1
 tensorboard-data-server==0.7.2
 tensorboard-plugin-wit==1.8.1
-tensorflow==2.15.0
 tensorflow-addons==0.21.0
 tensorflow-cpu==2.15.0
 tensorflow-estimator==2.15.0
