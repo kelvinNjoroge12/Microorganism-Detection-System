@@ -1,6 +1,8 @@
 import logging
 from django.http import JsonResponse
 from django.conf import settings
+import whitenoise
+whitenoise.middleware.WhiteNoiseMiddleware
 
 logger = logging.getLogger(__name__)
 
